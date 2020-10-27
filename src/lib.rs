@@ -59,6 +59,9 @@ struct WrappedFuncCall<'__> {
 
     pub
     call_site_args: Vec<Expr>,
+
+    pub
+    awaited: Option<TokenStream>,
 }
 
 pub
@@ -105,13 +108,14 @@ fn func_wrap<'lt> (
         ,
         outer_scope,
         block,
+        awaited: func.asyncness.map(|_| quote!( .await )),
     }
 })}
 
 impl ToTokens for WrappedFuncCall<'_> {
     fn to_tokens (self: &'_ Self, out: &'_ mut TokenStream)
     {
-        let Self { sig, outer_scope, block, call_site_args } = self;
+        let Self { sig, outer_scope, block, call_site_args, awaited } = self;
         let fname = &sig.ident;
         out.extend(match outer_scope {
             | None => quote!(
@@ -121,7 +125,7 @@ impl ToTokens for WrappedFuncCall<'_> {
                     #block
 
                     #fname
-                })(#(#call_site_args),*)
+                })(#(#call_site_args),*) #awaited
             ),
 
             | Some((
@@ -159,7 +163,7 @@ impl ToTokens for WrappedFuncCall<'_> {
                         {}
 
                         <Self as Helper #feed_generics>::#fname
-                    })(#(#call_site_args),*)
+                    })(#(#call_site_args),*) #awaited
                 )
             },
 
@@ -205,7 +209,7 @@ impl ToTokens for WrappedFuncCall<'_> {
                         }
 
                         <#implementor as Helper #feed_generics>::#fname
-                    })(#(#call_site_args),*)
+                    })(#(#call_site_args),*) #awaited
                 )
             },
         })

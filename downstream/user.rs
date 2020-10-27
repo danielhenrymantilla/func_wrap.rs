@@ -8,6 +8,10 @@ const _: () = {
     {
         println!("foo")
     }
+
+    #[attr]
+    async fn bar ()
+    {}
 };
 
 const _: () = {
