@@ -37,7 +37,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Update the lockfile
-        if: ${{ latest-lockfile }}
+        if: ${{ matrix.latest-lockfile }}
         uses: actions-rs/cargo@v1
         with:
           command: update
