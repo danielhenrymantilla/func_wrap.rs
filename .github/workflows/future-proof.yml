@@ -8,9 +8,9 @@ on:
     - cron: '0 8 * * 1,5'
 
 jobs:
-  # == TEST (No UI) == #
+  # == TEST == #
   test-no-ui:
-    name: (Check & Build &) Test (No UI)
+    name: (Check & Build &) Test
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -20,10 +20,11 @@ jobs:
           - macos-latest
           - windows-latest
         rust-toolchains:
-          - 1.40.0
+          - 1.42.0
           - stable
           - beta
           - nightly
+        latest-lockfile: [true, false]
     steps:
       - name: Install Rust toolchain
         uses: actions-rs/toolchain@v1
@@ -35,11 +36,13 @@ jobs:
       - name: Clone repo
         uses: actions/checkout@v2
 
-      - name: Cargo test (no UI)
+      - name: Update the lockfile
+        if: ${{ latest-lockfile }}
         uses: actions-rs/cargo@v1
-        env:
-          RUSTC_BOOTSTRAP: "1"
-          CI_SKIP_UI_TESTS: "1"
+        with:
+          command: update
+
+      - name: Cargo test
+        uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --features nightly

@@ -2,7 +2,7 @@
 # It is not intended for manual editing.
 [[package]]
 name = "func_wrap"
-version = "0.1.0"
+version = "0.1.0-rc1"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -16,6 +16,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "19f287c234c9b2d0308d692dee5c449c1a171167a6f8150f7cf2a49d8fd96967"
 dependencies = [
  "unicode-xid",
+]
+
+[[package]]
+name = "proc_macro_lib"
+version = "0.0.0"
+dependencies = [
+ "func_wrap",
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]

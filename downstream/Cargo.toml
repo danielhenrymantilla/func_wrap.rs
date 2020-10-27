@@ -1,0 +1,19 @@
+[lib]
+proc-macro = true
+path = "proc_macro_lib.rs"
+
+[[example]]
+name = "user"
+path = "user.rs"
+crate-type = ["lib"]
+
+[package]
+name = "proc_macro_lib"
+version = "0.0.0"
+edition = "2018"
+
+[dependencies]
+func_wrap = { path = ".." }
+proc-macro2 = "1.0.*"
+quote = "1.0.*"
+syn = "1.0.*"
