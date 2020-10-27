@@ -12,6 +12,10 @@ const _: () = {
     #[attr]
     async fn bar ()
     {}
+
+    #[attr]
+    fn baz<T>()
+    {}
 };
 
 const _: () = {

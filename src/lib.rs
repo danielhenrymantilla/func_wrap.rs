@@ -117,6 +117,8 @@ impl ToTokens for WrappedFuncCall<'_> {
     {
         let Self { sig, outer_scope, block, call_site_args, awaited } = self;
         let fname = &sig.ident;
+        let (_, temp, _) = sig.generics.split_for_impl();
+        let turbofish = temp.as_turbofish();
         out.extend(match outer_scope {
             | None => quote!(
                 ({
@@ -124,7 +126,7 @@ impl ToTokens for WrappedFuncCall<'_> {
                     #sig
                     #block
 
-                    #fname
+                    #fname #turbofish
                 })(#(#call_site_args),*) #awaited
             ),
 
@@ -162,7 +164,7 @@ impl ToTokens for WrappedFuncCall<'_> {
                         #where_clauses
                         {}
 
-                        <Self as Helper #feed_generics>::#fname
+                        <Self as Helper #feed_generics>::#fname #turbofish
                     })(#(#call_site_args),*) #awaited
                 )
             },
@@ -208,7 +210,7 @@ impl ToTokens for WrappedFuncCall<'_> {
                             #block
                         }
 
-                        <#implementor as Helper #feed_generics>::#fname
+                        <#implementor as Helper #feed_generics>::#fname #turbofish
                     })(#(#call_site_args),*) #awaited
                 )
             },
