@@ -223,7 +223,7 @@ fn parse_and_func_wrap_with (
     input: impl Into<TokenStream>,
     mut with: impl FnMut(
         &'_ mut ImplItemMethod,
-        Option<&'_ mut WrappedFuncCall<'_>>,
+        Option<WrappedFuncCall<'_>>,
     ) -> Result<()>,
 ) -> Result<Item>
 {Ok({
@@ -239,12 +239,12 @@ fn parse_and_func_wrap_with (
                 block: parse_quote!( {} ),
                 defaultness: None,
             };
-            let ref mut wrapped_func = func_wrap(
+            let wrapped_func = func_wrap(
                 &mut func.sig,
                 *block,
                 outer_scope,
             );
-            let () = with(&mut func, wrapped_func.as_mut())?;
+            let () = with(&mut func, wrapped_func)?;
             let ImplItemMethod { attrs, vis, sig, block, .. } = func;
             *it_fn = ItemFn {
                 attrs, vis, sig, block: Box::new(block),
@@ -270,12 +270,12 @@ fn parse_and_func_wrap_with (
                             block: parse_quote!( {} ),
                             defaultness: None,
                         };
-                        let ref mut wrapped_func = func_wrap(
+                        let wrapped_func = func_wrap(
                             &mut func.sig,
                             block,
                             outer_scope,
                         );
-                        let () = with(&mut func, wrapped_func.as_mut())?;
+                        let () = with(&mut func, wrapped_func)?;
                         let ImplItemMethod { attrs, sig, block, .. } = func;
                         *method = TraitItemMethod {
                             attrs, sig, default: Some(block),
@@ -299,12 +299,12 @@ fn parse_and_func_wrap_with (
 
             it_impl.items.iter_mut().try_for_each(|it| Result::Ok(match *it {
                 | ImplItem::Method(ref mut func) => {
-                    let ref mut wrapped_func = func_wrap(
+                    let wrapped_func = func_wrap(
                         &mut func.sig,
                         mem::replace(&mut func.block, parse_quote!( {} )),
                         outer_scope,
                     );
-                    let () = with(func, wrapped_func.as_mut())?;
+                    let () = with(func, wrapped_func)?;
                 },
                 | _ => {},
             }))?;
