@@ -4,6 +4,29 @@ version = "0.1.0-rc1"
 authors = ["Daniel Henry-Mantilla <daniel.henry.mantilla@gmail.com>"]
 edition = "2018"
 
+license = "Zlib OR MIT OR Apache-2.0"
+
+documentation = "https://docs.rs/func_wrap"
+repository = "https://github.com/danielhenrymantilla/func_wrap.rs"
+homepage = "https://crates.io/crates/func_wrap"
+
+readme = "README.md"
+
+description = """
+Helper crate for procedural macro authors that wish to duplicate some received function inside its body, so as to be able to wrap with some prologue, epilogue, cache-ing, etc.
+"""
+
+keywords = [
+    "decorator",
+    "proc-macro",
+    "wrap",
+    "nested",
+    "function",
+]
+categories = [
+    "rust-patterns",
+]
+
 [dependencies]
 quote = "1.0.*"
 proc-macro2 = "1.0.*"
