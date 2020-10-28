@@ -79,6 +79,7 @@ fn func_wrap<'lt> (
                 .enumerate()
                 .map(|(n, fn_arg)| Some(match *fn_arg {
                     | FnArg::Receiver(ref receiver) => {
+                        if outer_scope.is_none() { return None; }
                         let self_ = format_ident!(
                             "self",
                             span = receiver.self_token.span,
