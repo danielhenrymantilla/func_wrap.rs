@@ -138,7 +138,7 @@ impl ToTokens for WrappedFuncCall<'_> {
                     generics.split_for_impl()
                 ;
                 let trait_def = quote!(
-                    trait Helper #intro_generics
+                    trait __FuncWrap #intro_generics
                     :
                         #trait_name #feed_generics
                     #where_clauses
@@ -158,13 +158,13 @@ impl ToTokens for WrappedFuncCall<'_> {
                         #trait_def
 
                         impl #impl_generics
-                            Helper #feed_generics
+                            __FuncWrap #feed_generics
                         for
                             __Self
                         #where_clauses
                         {}
 
-                        <Self as Helper #feed_generics>::#fname #turbofish
+                        <Self as __FuncWrap #feed_generics>::#fname #turbofish
                     })(#(#call_site_args),*) #awaited
                 )
             },
@@ -192,7 +192,7 @@ impl ToTokens for WrappedFuncCall<'_> {
                 let super_trait = trait_name.map(|it| quote!( : #it ));
                 quote!(
                     ({
-                        trait Helper #intro_generics
+                        trait __FuncWrap #intro_generics
                             #super_trait
                         #where_clauses
                         {
@@ -200,7 +200,7 @@ impl ToTokens for WrappedFuncCall<'_> {
                         }
 
                         impl #intro_generics
-                            Helper #feed_generics
+                            __FuncWrap #feed_generics
                         for
                             #implementor
                         #where_clauses
@@ -210,7 +210,7 @@ impl ToTokens for WrappedFuncCall<'_> {
                             #block
                         }
 
-                        <#implementor as Helper #feed_generics>::#fname #turbofish
+                        <Self as __FuncWrap #feed_generics>::#fname #turbofish
                     })(#(#call_site_args),*) #awaited
                 )
             },

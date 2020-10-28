@@ -115,7 +115,7 @@ fn default_method ()
             fn foo (self, second: (), arg_2: (), arg_3: (i32, ))
             {
                 ({
-                    trait Helper<T> : Foo<T>
+                    trait __FuncWrap<T> : Foo<T>
                     where
                         () : Copy,
                     {
@@ -126,13 +126,13 @@ fn default_method ()
                         }
                     }
 
-                    impl<T, __Self : ?Sized + Foo<T>> Helper<T>
+                    impl<T, __Self : ?Sized + Foo<T>> __FuncWrap<T>
                         for __Self
                     where
                         () : Copy,
                     {}
 
-                    <Self as Helper<T>>::foo
+                    <Self as __FuncWrap<T>>::foo
                 })(self, second, arg_2, arg_3)
             }
         }
@@ -164,7 +164,7 @@ mod impls {
                 fn foo (self: Self, second: (), arg_2: (), arg_3: (i32, ))
                 {
                     ({
-                        trait Helper<T>
+                        trait __FuncWrap<T>
                         where
                             () : Copy,
                         {
@@ -172,7 +172,7 @@ mod impls {
                             ;
                         }
 
-                        impl<T> Helper<T>
+                        impl<T> __FuncWrap<T>
                             for Foo<T>
                         where
                             () : Copy,
@@ -184,7 +184,7 @@ mod impls {
                             }
                         }
 
-                        <Foo<T> as Helper<T>>::foo
+                        <Self as __FuncWrap<T>>::foo
                     })(self, second, arg_2, arg_3)
                 }
             }
@@ -213,7 +213,7 @@ mod impls {
                 fn foo (self, second: (), arg_2: (), arg_3: (i32, ))
                 {
                     ({
-                        trait Helper<T, U> : Trait<U>
+                        trait __FuncWrap<T, U> : Trait<U>
                         where
                             () : Copy,
                         {
@@ -221,7 +221,7 @@ mod impls {
                             ;
                         }
 
-                        impl<T, U> Helper<T, U>
+                        impl<T, U> __FuncWrap<T, U>
                             for Foo<T>
                         where
                             () : Copy,
@@ -233,7 +233,7 @@ mod impls {
                             }
                         }
 
-                        <Foo<T> as Helper<T, U>>::foo
+                        <Self as __FuncWrap<T, U>>::foo
                     })(self, second, arg_2, arg_3)
                 }
             }
