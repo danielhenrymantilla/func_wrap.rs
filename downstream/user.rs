@@ -16,6 +16,9 @@ const _: () = {
     #[attr]
     fn baz<T>()
     {}
+
+    fn with_lifetime<'explicit>()
+    {}
 };
 
 const _: () = {
@@ -28,6 +31,9 @@ const _: () = {
         {
             println!("foo")
         }
+
+        fn with_lifetime<'explicit>()
+        {}
     }
 
     #[attr]
@@ -39,6 +45,9 @@ const _: () = {
         {
             println!("foo")
         }
+
+        fn with_lifetime<'explicit>()
+        {}
     }
 };
 
@@ -54,5 +63,8 @@ const _: () = {
         {
             println!("foo")
         }
+
+        fn with_lifetime<'explicit>()
+        {}
     }
 };

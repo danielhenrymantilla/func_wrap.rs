@@ -88,7 +88,7 @@ fn simple_fn ()
                     println!("foo")
                 }
 
-                foo
+                foo ::<>
             })(arg_0, second, arg_2, arg_3)
         }
     });
@@ -161,7 +161,7 @@ fn default_method ()
                         () : Copy,
                     {}
 
-                    <Self as __FuncWrap<T>>::foo
+                    <Self as __FuncWrap<T>>::foo ::<>
                 })(self, second, arg_2, arg_3)
             }
         }
@@ -241,7 +241,7 @@ mod impls {
                             }
                         }
 
-                        <Self as __FuncWrap<T>>::foo
+                        <Self as __FuncWrap<T>>::foo ::<>
                     })(self, second, arg_2, arg_3)
                 }
             }
@@ -290,7 +290,7 @@ mod impls {
                             }
                         }
 
-                        <Self as __FuncWrap<T, U>>::foo
+                        <Self as __FuncWrap<T, U>>::foo ::<>
                     })(self, second, arg_2, arg_3)
                 }
             }

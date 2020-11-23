@@ -119,7 +119,21 @@ impl ToTokens for WrappedFuncCall<'_> {
         let Self { sig, outer_scope, block, call_site_args, awaited } = self;
         let fname = &sig.ident;
         let (_, temp, _) = sig.generics.split_for_impl();
-        let turbofish = temp.as_turbofish();
+        // let turbofish = temp.as_turbofish();
+        // Turbofish currently bundles the lifetime parameters, which for
+        // a function param, leads to an error with late-bound lifetimes 😫
+        // Manually hand-roll our own turbofish, then:
+        let turbofish = {
+            let _ = temp;
+            let each_ty = sig.generics.type_params().map(|it| &it.ident);
+            let each_const = sig.generics.const_params().map(|it| &it.ident);
+            quote!(
+                ::<
+                    #(#each_ty ,)*
+                    #( {#each_const} ),*
+                >
+            )
+        };
         out.extend(match outer_scope {
             | None => quote!(
                 ({
